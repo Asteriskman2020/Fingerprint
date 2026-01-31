@@ -76,75 +76,88 @@ static const char DASHBOARD_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html><html><
 <meta http-equiv='refresh' content='3'>
 <title>Fingerprint Dashboard</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
-.hdr{background:linear-gradient(135deg,#1e293b,#334155);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #475569}
-.hdr h1{font-size:1.3rem;color:#a78bfa}
-.dots{display:flex;gap:10px}
-.dot{width:10px;height:10px;border-radius:50%%}
-.sg{background:#22c55e;box-shadow:0 0 6px #22c55e}
-.sr{background:#ef4444;box-shadow:0 0 6px #ef4444}
-.sy{background:#eab308;box-shadow:0 0 6px #eab308}
-.main{max-width:800px;margin:0 auto;padding:20px}
-.status{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:16px;padding:24px;text-align:center;margin-bottom:20px}
-.status .lbl{font-size:.85rem;color:#94a3b8;margin-bottom:8px}
-.status .ico{font-size:3.5rem;margin:8px 0}
-.status .val{font-size:1.8rem;font-weight:700;letter-spacing:1px}
-.status .sub{font-size:.85rem;color:#64748b;margin-top:10px}
-.matched{color:#22c55e}
-.rejected{color:#ef4444}
-.waiting{color:#94a3b8}
-.scanning{color:#eab308}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;text-align:center}
-.card .cl{font-size:.75rem;color:#94a3b8;text-transform:uppercase;margin-bottom:6px}
-.card .cv{font-size:1.4rem;font-weight:600;color:#f8fafc}
-.card .cu{font-size:.7rem;color:#64748b;margin-top:4px}
-.hi{color:#22c55e}
-.lo{color:#ef4444}
-.med{color:#eab308}
-.log{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;margin-bottom:20px}
-.log h3{color:#a78bfa;font-size:.85rem;margin-bottom:10px}
-.log .entry{font-family:monospace;font-size:.8rem;color:#94a3b8;padding:4px 0;border-bottom:1px solid #1e293b}
-.ftr{text-align:center;padding:16px;color:#475569;font-size:.75rem}
-.ftr a{color:#a78bfa;text-decoration:none}
-.enroll-btn{display:inline-block;padding:10px 24px;background:#7c3aed;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px}
-.enroll-btn:hover{background:#6d28d9}
-.del-btn{display:inline-block;padding:10px 24px;background:#dc2626;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:8px;margin-left:8px}
-.del-btn:hover{background:#b91c1c}
+body{background:linear-gradient(135deg,#0c0118 0%%,#1a0533 40%%,#0d1b2a 100%%);color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+@keyframes pulse{0%%,100%%{opacity:1}50%%{opacity:.5}}
+@keyframes glow{0%%,100%%{box-shadow:0 0 5px var(--gc)}50%%{box-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}}
+@keyframes spin{0%%{transform:rotate(0deg)}100%%{transform:rotate(360deg)}}
+.hdr{background:linear-gradient(135deg,#2d1b69,#1e3a5f,#0d7377);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #7c3aed}
+.hdr h1{font-size:1.4rem;background:linear-gradient(90deg,#c084fc,#38bdf8,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
+.dots{display:flex;gap:12px;align-items:center}
+.dot{width:12px;height:12px;border-radius:50%%}
+.sg{background:#22c55e;box-shadow:0 0 8px #22c55e,0 0 16px #22c55e50;animation:pulse 2s infinite}
+.sr{background:#ef4444;box-shadow:0 0 8px #ef4444,0 0 16px #ef444450;animation:pulse 1s infinite}
+.dl{font-size:.6rem;color:#94a3b8;text-align:center;margin-top:2px}
+.main{max-width:840px;margin:0 auto;padding:20px}
+.status{background:linear-gradient(135deg,#1e0a3c,#0f172a,#0a1628);border:2px solid;border-image:linear-gradient(135deg,#7c3aed,#06b6d4,#22c55e) 1;border-radius:0;padding:28px;text-align:center;margin-bottom:20px;position:relative;overflow:hidden}
+.status::before{content:'';position:absolute;top:-50%%;left:-50%%;width:200%%;height:200%%;background:conic-gradient(from 0deg,transparent,rgba(124,58,237,.1),transparent,rgba(6,182,212,.1),transparent);animation:spin 8s linear infinite}
+.status>*{position:relative;z-index:1}
+.status .lbl{font-size:.8rem;color:#c084fc;text-transform:uppercase;letter-spacing:3px;margin-bottom:10px}
+.status .ico{font-size:4rem;margin:10px 0;filter:drop-shadow(0 0 12px rgba(124,58,237,.6))}
+.status .val{font-size:2rem;font-weight:800;letter-spacing:2px}
+.status .sub{font-size:.8rem;color:#94a3b8;margin-top:12px}
+.matched{color:#22c55e;text-shadow:0 0 20px #22c55e80}
+.rejected{color:#ef4444;text-shadow:0 0 20px #ef444480}
+.waiting{color:#c084fc;text-shadow:0 0 20px #c084fc60}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px}
+.card{background:linear-gradient(145deg,#1a1035,#0f172a);border:1px solid #334155;border-radius:14px;padding:18px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:#7c3aed}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.card:nth-child(1)::after{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+.card:nth-child(2)::after{background:linear-gradient(90deg,#06b6d4,#22d3ee)}
+.card:nth-child(3)::after{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.card:nth-child(4)::after{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.card:nth-child(5)::after{background:linear-gradient(90deg,#22c55e,#4ade80)}
+.card:nth-child(6)::after{background:linear-gradient(90deg,#ef4444,#f87171)}
+.card .cl{font-size:.7rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.card .cv{font-size:1.5rem;font-weight:700;color:#f8fafc}
+.card .cu{font-size:.65rem;color:#64748b;margin-top:5px}
+.hi{color:#4ade80;text-shadow:0 0 10px #22c55e60}
+.lo{color:#f87171;text-shadow:0 0 10px #ef444460}
+.med{color:#fbbf24;text-shadow:0 0 10px #f59e0b60}
+.sys .card::after{background:linear-gradient(90deg,#6366f1,#818cf8)}
+.acts{text-align:center;margin:20px 0}
+.enroll-btn{display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:.95rem;box-shadow:0 4px 15px #7c3aed50;transition:all .3s}
+.enroll-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px #7c3aed70}
+.del-btn{display:inline-block;padding:12px 32px;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:.95rem;margin-left:10px;box-shadow:0 4px 15px #dc262650;transition:all .3s}
+.del-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px #dc262670}
+.ftr{text-align:center;padding:20px;font-size:.75rem}
+.ftr a{color:#c084fc;text-decoration:none;margin:0 8px;transition:color .3s}
+.ftr a:hover{color:#e9d5ff}
+.ftr span{color:#475569}
 </style></head><body>
 <div class='hdr'><h1>Fingerprint Dashboard</h1>
 <div class='dots'>
-<div class='dot %WDOT%' title='WiFi'></div>
-<div class='dot %MDOT%' title='MQTT'></div>
-<div class='dot %SDOT%' title='Sensor'></div>
+<div><div class='dot %WDOT%'></div><div class='dl'>WiFi</div></div>
+<div><div class='dot %MDOT%'></div><div class='dl'>MQTT</div></div>
+<div><div class='dot %SDOT%'></div><div class='dl'>Sensor</div></div>
 </div></div>
 <div class='main'>
 <div class='status'>
-<div class='lbl'>SCANNER STATUS</div>
+<div class='lbl'>Scanner Status</div>
 <div class='ico'>%ICON%</div>
 <div class='val %SCLS%'>%STXT%</div>
-<div class='sub'>Last event: %EVENT% | %AGO%</div>
+<div class='sub'>%EVENT% &middot; %AGO%</div>
 </div>
 <div class='grid'>
-<div class='card'><div class='cl'>Last Match ID</div><div class='cv %MIDCLS%'>%MID%</div><div class='cu'>fingerprint</div></div>
+<div class='card'><div class='cl'>Match ID</div><div class='cv %MIDCLS%'>%MID%</div><div class='cu'>fingerprint</div></div>
 <div class='card'><div class='cl'>Confidence</div><div class='cv %CCLS%'>%CONF%</div><div class='cu'>score</div></div>
 <div class='card'><div class='cl'>Templates</div><div class='cv'>%TCNT%</div><div class='cu'>stored</div></div>
 <div class='card'><div class='cl'>Total Scans</div><div class='cv'>%SCANS%</div><div class='cu'>attempts</div></div>
 <div class='card'><div class='cl'>Matches</div><div class='cv hi'>%MATCHES%</div><div class='cu'>accepted</div></div>
 <div class='card'><div class='cl'>Rejects</div><div class='cv lo'>%REJECTS%</div><div class='cu'>denied</div></div>
 </div>
-<div class='grid'>
+<div class='grid sys'>
 <div class='card'><div class='cl'>RSSI</div><div class='cv'>%RSSI%</div><div class='cu'>dBm</div></div>
 <div class='card'><div class='cl'>Free Heap</div><div class='cv'>%HEAP%</div><div class='cu'>bytes</div></div>
-<div class='card'><div class='cl'>Uptime</div><div class='cv'>%UPTIME%</div><div class='cu'></div></div>
-<div class='card'><div class='cl'>Reboot In</div><div class='cv'>%REBOOT%</div><div class='cu'></div></div>
+<div class='card'><div class='cl'>Uptime</div><div class='cv'>%UPTIME%</div><div class='cu'>&nbsp;</div></div>
+<div class='card'><div class='cl'>Reboot In</div><div class='cv'>%REBOOT%</div><div class='cu'>&nbsp;</div></div>
 </div>
-<div style='text-align:center'>
+<div class='acts'>
 <a class='enroll-btn' href='/enroll'>Enroll New Finger</a>
 <a class='del-btn' href='/delete'>Delete All</a>
 </div>
 </div>
-<div class='ftr'>Fingerprint Dashboard V1 | <a href='/json'>JSON</a> | <a href='/config'>Config</a></div>
+<div class='ftr'><span>Fingerprint Dashboard V1</span> <a href='/json'>JSON</a> <a href='/config'>Config</a></div>
 </body></html>)rawliteral";
 
 // ============== PROGMEM HTML: CONFIG ==============
@@ -152,19 +165,21 @@ static const char CONFIG_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html><html><hea
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
 <title>Fingerprint Config</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center}
-.box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:32px;width:90%%;max-width:420px}
-h2{color:#a78bfa;margin-bottom:16px;text-align:center}
-label{display:block;color:#94a3b8;font-size:.8rem;margin:10px 0 4px;text-transform:uppercase}
-input{width:100%%;padding:10px 12px;border:1px solid #475569;border-radius:8px;background:#0f172a;color:#f8fafc;font-size:.95rem}
-input:focus{outline:none;border-color:#a78bfa}
-.btn{width:100%%;padding:12px;margin-top:20px;background:#7c3aed;color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600}
-.btn:hover{background:#6d28d9}
-.ok{background:#166534;color:#22c55e;padding:10px;border-radius:8px;text-align:center;margin-bottom:12px}
-.info{text-align:center;color:#64748b;font-size:.75rem;margin-top:16px}
+body{background:linear-gradient(135deg,#0c0118 0%%,#1a0533 40%%,#0d1b2a 100%%);color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center}
+.box{background:linear-gradient(145deg,#1a1035,#0f172a);border:2px solid #7c3aed40;border-radius:20px;padding:36px;width:90%%;max-width:440px;box-shadow:0 8px 32px rgba(124,58,237,.2)}
+h2{background:linear-gradient(90deg,#c084fc,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;text-align:center;font-size:1.5rem;font-weight:800}
+.sep{height:2px;background:linear-gradient(90deg,transparent,#7c3aed,#06b6d4,transparent);margin:6px 0 16px;border:none}
+label{display:block;color:#c084fc;font-size:.75rem;margin:12px 0 4px;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+input{width:100%%;padding:11px 14px;border:1px solid #334155;border-radius:10px;background:#0c0118;color:#f8fafc;font-size:.95rem;transition:border-color .3s}
+input:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 12px #7c3aed30}
+.btn{width:100%%;padding:14px;margin-top:24px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:700;box-shadow:0 4px 15px #7c3aed40;transition:all .3s;letter-spacing:.5px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px #7c3aed60}
+.ok{background:linear-gradient(135deg,#166534,#15803d);color:#4ade80;padding:12px;border-radius:10px;text-align:center;margin-bottom:14px;font-weight:600}
+.info{text-align:center;color:#64748b;font-size:.75rem;margin-top:20px}
 </style></head><body>
 <div class='box'>
 <h2>Fingerprint Config</h2>
+<hr class='sep'>
 %MSG%
 <form method='POST' action='/save'>
 <label>WiFi SSID</label><input name='ssid' value='%SSID%'>
@@ -184,14 +199,15 @@ static const char ENROLL_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html><html><hea
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
 <title>Enroll Finger</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center}
-.box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:32px;width:90%%;max-width:420px;text-align:center}
-h2{color:#a78bfa;margin-bottom:16px}
-.msg{padding:16px;border-radius:8px;margin:12px 0;font-size:1rem}
-.ok{background:#166534;color:#22c55e}
-.err{background:#7f1d1d;color:#ef4444}
-.info{background:#1e3a5f;color:#38bdf8}
-a{color:#a78bfa;text-decoration:none;display:inline-block;margin-top:16px}
+body{background:linear-gradient(135deg,#0c0118 0%%,#1a0533 40%%,#0d1b2a 100%%);color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center}
+.box{background:linear-gradient(145deg,#1a1035,#0f172a);border:2px solid #7c3aed40;border-radius:20px;padding:36px;width:90%%;max-width:440px;text-align:center;box-shadow:0 8px 32px rgba(124,58,237,.2)}
+h2{background:linear-gradient(90deg,#c084fc,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;font-size:1.5rem;font-weight:800}
+.msg{padding:18px;border-radius:12px;margin:16px 0;font-size:1rem;font-weight:600}
+.ok{background:linear-gradient(135deg,#166534,#15803d);color:#4ade80;box-shadow:0 4px 15px #22c55e30}
+.err{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fca5a5;box-shadow:0 4px 15px #ef444430}
+.info{background:linear-gradient(135deg,#1e3a5f,#1e40af);color:#93c5fd;box-shadow:0 4px 15px #3b82f630}
+a{color:#c084fc;text-decoration:none;display:inline-block;margin-top:20px;font-weight:600;transition:color .3s}
+a:hover{color:#e9d5ff}
 </style></head><body>
 <div class='box'>
 <h2>Enroll Finger</h2>
